@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.python-version
+venv/
+.env
+.env.*
+.venv/
+env/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.egg-info/
+*.egg
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+logs/
+*.log
+
+# Coverage
+htmlcov/
+.coverage
+coverage.xml
+
+# pip
+pip-wheel-metadata/
+
+# Virtual environment
+.Python
+
+# Chroma DB and uploads
+chroma_db/
+chroma.sqlite3
+uploads/
+
+# Local secrets
+secrets.json
+credentials.json
+
+# Temp
+tmp/
+temp/
+
+# Tests
+.coverage
+
+# Ignore SQLite DB files
+*.sqlite3
+
+# Ignore compiled C extensions
+*.so
+
+
+__pycache__/
+*.py[cod]
