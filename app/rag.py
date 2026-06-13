@@ -3,7 +3,7 @@ from langchain_community.document_loaders import TextLoader, PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 import asyncio
-from langchain_community.callbacks import BaseCallbackHandler
+from langchain_core.callbacks import BaseCallbackHandler
 from app.core.logger import get_logger
 
 logger = get_logger(__name__)

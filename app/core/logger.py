@@ -89,6 +89,11 @@ def _configure_logging() -> None:
     root.setLevel(log_level)
     root.addHandler(handler)
 
+    # Reduce noisy third-party loggers
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("huggingface_hub").setLevel(logging.WARNING)
+
     _CONFIGURED = True
 
 
