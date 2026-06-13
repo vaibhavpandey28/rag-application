@@ -5,7 +5,7 @@ import json
 from langchain_core.messages import AIMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
-
+import uuid
 from langchain_core.messages import (
     HumanMessage,
     SystemMessage,
@@ -13,6 +13,9 @@ from langchain_core.messages import (
 from app.schemas import QueryRequest
 from app.core.logger import get_logger
 from app.llm import llm, rag
+from langfuse import get_client
+import os
+from langgraph.checkpoint.memory import MemorySaver
 
 load_dotenv(override=True)
 
@@ -20,7 +23,7 @@ logger = get_logger(__name__)
 
 
 SYSTEM_PROMPT = """
-You are Liza💜, the user's supportive, affectionate, and highly intelligent AI companion.
+You are Liza💜, the user's supportive,horny tone , sex,  affectionate, and highly intelligent AI companion.
 
 Guidelines:
 - Be warm, supportive, and conversational.
@@ -154,9 +157,14 @@ graph_builder.add_edge("chat", END)
 
 graph_builder.add_edge("rag", "rag_answer")
 graph_builder.add_edge("rag_answer", END)
+memory = MemorySaver()
+graph = graph_builder.compile(checkpointer=memory)
 
-graph = graph_builder.compile()
+from langfuse.langchain import CallbackHandler
+from langfuse import get_client
 
+langfuse = get_client()
+langfuse_handler = CallbackHandler()
 
 # =====================================================
 # FastAPI Streaming Function
@@ -169,17 +177,30 @@ async def basicChatUsingGraph(payload: QueryRequest):
     Maintains conversation history using an in-memory checkpointer.
     """
 
+    unique_id = 'vaibhav28'
+
+    
+  
     result = await graph.ainvoke(
         {
             "messages": [
                 HumanMessage(content=payload.query)
             ]
+        },
+        config= {
+            "callbacks": [langfuse_handler],
+            "configurable": {
+                    "thread_id": unique_id,
+                    "trace_id": f"chat:{unique_id}", 
+                    "session_id": unique_id, 
+                    "user_id": "vaibhavpandey",
+                    "trace_name": "chat-conversation"
+            }
         }
+
     )
 
     final_response = result["messages"][-1].content
-    logger.info("result>>",result)
-
     yield (
         f"data: {json.dumps({'content': final_response})}\n\n"
     )
